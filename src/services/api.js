@@ -74,11 +74,11 @@ export const getMessages = (updaterFn) => setListener('messages', (snapshot) => 
 });
 
 
-export const postMessage = (message) => {
+export const postMessage = (userId, message) => {
     if (Boolean(message)) {
-        return pushData('messages', {
-            userId: USER_ID,
-            message
-        })
+      return pushData('messages', {
+        userId,
+        message
+      })
     }
 }

@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native'
 import * as Animatable from 'react-native-animatable';
-import { USER_ID } from '../services/api';
 
-const Message = ({ item }) => {
-const incoming = item.userId !== USER_ID
+const Message = ({ item, userId }) => {
+const incoming = item.userId !== userId
  return (
    <Animatable.View 
       duration={100}

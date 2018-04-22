@@ -7,7 +7,8 @@ import {
   StyleSheet, 
   KeyboardAvoidingView, 
   Platform,
-  LayoutAnimation
+  LayoutAnimation,
+  AsyncStorage
 } from 'react-native'
 import { getMessages, postMessage } from '../services/api';
 import Compose from '../components/Compose'
@@ -28,7 +29,8 @@ export class ChatViewScreen extends Component {
   }
 
   state = {
-    messages: []
+    messages: [],
+    userId: null
   }
 
   componentWillUnmount() {
@@ -39,6 +41,11 @@ export class ChatViewScreen extends Component {
     this.unsubscribeGetMessages = getMessages((snapshot) => {
       this.setState({
           messages: Object.values(snapshot.val())
+      })
+    })
+    AsyncStorage.getItem('userId').then(userId => {
+      this.setState({
+        userId
       })
     })
   }
@@ -59,10 +66,10 @@ export class ChatViewScreen extends Component {
           <FlatList
                 style={styles.container}
                 data={this.state.messages}
-                renderItem={Message}
+                renderItem={({ item }) => <Message item={item} userId={this.state.userId} /> }
                 keyExtractor={(item, index) => (`message-${index}`)}
           />
-          <Compose submit={postMessage} />
+          <Compose submit={(message) => postMessage(this.state.userId, message )} />
         </KeyboardAvoidingView>
       </ImageBackground>
     )

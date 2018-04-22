@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   Button,
-  View
+  View,
+  AsyncStorage
 } from 'react-native';
 import { StackNavigator, } from 'react-navigation';
 import { ChatsScreen, ChatViewScreen } from './src/screens'
@@ -33,6 +34,12 @@ export default class App extends React.Component {
 
   componentDidMount() {
     initApi()
+    AsyncStorage.getItem('userId').then((userId) => {
+      alert(`Username id: ${userId}`)
+      if (!userId) {
+        AsyncStorage.setItem('userId', `id-${new Date().getMilliseconds()}`)
+      }
+    })
   }
   
   render(){
